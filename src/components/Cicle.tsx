@@ -11,11 +11,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export type LogDay = { weight: number; repetition: number };
 
-type CicleProps = {};
+type CicleProps = {
+  title: string;
+};
 
-export const Cicle = ({}: CicleProps) => {
-  const [weight, setWeight] = useState(0);
-  const [repetitions, setRepetitions] = useState(0);
+export const Cicle = ({ title }: CicleProps) => {
   const [logDays, setLogDays] = useState<LogDay[]>([
     { repetition: 0, weight: 0 },
   ]);
@@ -36,12 +36,11 @@ export const Cicle = ({}: CicleProps) => {
 
   return (
     <div className="flex gap-2 border border-black w-full">
-      <div
-        className="flex items-center justify-between font-bold p-4 bg-neutral-100"
-        style={{ writingMode: "vertical-rl" }}
-      >
-        <span>Cicle</span>
-        <div className="flex gap-1">
+      <div className="flex flex-col items-center gap-2 font-bold p-4 bg-neutral-100  border-[5px] border-violet-500">
+        <span className="h-16" style={{ writingMode: "vertical-rl" }}>
+          {title}
+        </span>
+        <div className="flex flex-col items-center gap-1 w-6">
           <Button onClick={onAddNewLogDay}>
             <FontAwesomeIcon icon={faPlus} />
           </Button>
@@ -68,7 +67,7 @@ export const Cicle = ({}: CicleProps) => {
             <span className="h-8">RM:</span>
           </div>
           <div className="flex gap-3 overflow-x-auto p-4">
-            {logDays.map((cur, idx) => (
+            {logDays.map((cur, idx, src) => (
               <LogDayInputs
                 key={idx}
                 weight={cur.weight}
@@ -76,6 +75,7 @@ export const Cicle = ({}: CicleProps) => {
                 onChangeRepetitions={onChangeRepetitionsByIdx(idx)}
                 onChangeWeight={onChangeWeightByIdx(idx)}
                 wrapperProps={{ style: { minWidth: "80px" } }}
+                title={`Day ${src.length - idx}`}
               />
             ))}
           </div>
