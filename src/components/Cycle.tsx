@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export type LogDay = { weight: number; repetition: number };
 
-type CicleProps = {
+type CycleProps = {
   title: string;
   logDays: LogDay[];
   changeRepetitionByIdx: (dayIdx: number) => (newValue: number) => void;
@@ -20,7 +20,7 @@ type CicleProps = {
   expand: boolean;
 };
 
-export const Cicle = ({
+export const Cycle = ({
   title,
   changeRepetitionByIdx,
   changeWeightByIdx,
@@ -28,7 +28,7 @@ export const Cicle = ({
   logDays,
   onToggleExpand,
   expand,
-}: CicleProps) => {
+}: CycleProps) => {
   return (
     <div className="flex gap-2 border border-black w-full">
       <div className="flex flex-col items-center gap-2 font-bold p-4 bg-neutral-100  border-[5px] border-violet-500">

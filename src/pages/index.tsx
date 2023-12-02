@@ -3,7 +3,7 @@ import { Button } from "@/components/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import { LogDay, Cicle } from "@/components/Cicle";
+import { LogDay, Cycle } from "@/components/Cycle";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -12,11 +12,10 @@ type CycleData = {
 };
 
 const NEW_DAY_LOG: LogDay = { repetition: 0, weight: 0 };
+const NEW_CYCLE:CycleData = { logs: [{ repetition: 0, weight: 0 }] }
 
 export default function Home() {
-  const [cycles, setCycles] = useState<CycleData[]>([
-    { logs: [{ repetition: 0, weight: 0 }] },
-  ]);
+  const [cycles, setCycles] = useState<CycleData[]>([NEW_CYCLE]);
   const [expandedCycleIndex, setExpandedCycleIndex] = useState(-1);
 
   const onAddNewCycle = () =>
@@ -51,15 +50,9 @@ export default function Home() {
       );
     };
 
-  const onToggleExpandCycle = (cicleIdx: number) => () => {
-    if (expandedCycleIndex === -1) {
-      setExpandedCycleIndex(cicleIdx);
-    }
-    if (expandedCycleIndex === cicleIdx) {
-      setExpandedCycleIndex(-1);
-    } else {
-      setExpandedCycleIndex(cicleIdx);
-    }
+  const onToggleExpandCycle = (cycleIdx: number) => () => {
+    if (expandedCycleIndex <0) setExpandedCycleIndex(cycleIdx)
+    else setExpandedCycleIndex(expandedCycleIndex === cycleIdx?-1:cycleIdx)
   };
 
   return (
@@ -76,8 +69,8 @@ export default function Home() {
               key={idx}
               className="min-w-[400px] border-[5px] border-orange-500"
             >
-              <Cicle
-                title={`Cicle ${src.length - idx}`}
+              <Cycle
+                title={`Cycle ${src.length - idx}`}
                 logDays={cur.logs}
                 addNewCycle={onAddNewDayLogByIdx(idx)}
                 changeRepetitionByIdx={onChangeReputationFromCycleByIdx(idx)}
