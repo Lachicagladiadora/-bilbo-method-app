@@ -30,33 +30,34 @@ export const Cycle = ({
   expand,
 }: CycleProps) => {
   return (
-    <div className="flex gap-2 border border-black w-full">
-      <div className="flex flex-col items-center gap-2 font-bold p-4 bg-neutral-100  border-[5px] border-violet-500">
+    <div className=" flex gap-2 w-full bg-slate-200">
+      <div
+        className={`flex flex-col items-center justify-between  font-bold p-4 bg-neutral-100 text-neutral-100 ${
+          expand ? "bg-neutral-700" : "bg-neutral-500"
+        } hover:bg-black cursor-pointer`}
+        onClick={onToggleExpand}
+      >
         <span className="h-16" style={{ writingMode: "vertical-rl" }}>
           {title}
         </span>
-        <div className="flex flex-col items-center gap-1 w-6">
-          <Button onClick={addNewCycle}>
-            <FontAwesomeIcon icon={faPlus} />
-          </Button>
-          <Button>
-            <FontAwesomeIcon icon={faGear} />
-          </Button>
-          <Button onClick={onToggleExpand}>
-            <FontAwesomeIcon
-              icon={faAngleRight}
-              className={`${
-                expand
-                  ? "rotate-180 transition-[1s]"
-                  : "rotate-0 transition-[1s]"
-              }`}
-            />
-          </Button>
-        </div>
+        <FontAwesomeIcon
+          icon={faAngleRight}
+          className={`${
+            expand ? "rotate-180 transition-[1s]" : "rotate-0 transition-[1s]"
+          }`}
+        />
       </div>
       {expand && (
         <>
-          <div className="flex flex-col gap-2 font-bold p-4 justify-center">
+          <div className="flex flex-col gap-2 font-bold p-4 justify-center relative">
+            <div className="absolute top-0 left-0">
+              <Button onClick={addNewCycle}>
+                <FontAwesomeIcon icon={faPlus} />
+              </Button>
+              <Button>
+                <FontAwesomeIcon icon={faGear} />
+              </Button>
+            </div>
             <span className="h-8">Weigth:</span>
             <span className="h-8">Repetitions:</span>
             <span className="h-8">RM:</span>

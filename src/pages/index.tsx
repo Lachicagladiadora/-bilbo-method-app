@@ -16,7 +16,7 @@ const NEW_CYCLE: CycleData = { logs: [{ repetition: 0, weight: 0 }] };
 
 export default function Home() {
   const [cycles, setCycles] = useState<CycleData[]>([NEW_CYCLE]);
-  const [expandedCycleIndex, setExpandedCycleIndex] = useState(-1);
+  const [expandedCycleIndex, setExpandedCycleIndex] = useState(0);
 
   const onAddNewCycle = () => {
     setCycles((prev) => [{ logs: [{ repetition: 0, weight: 0 }] }, ...prev]);
@@ -58,31 +58,29 @@ export default function Home() {
   };
 
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-    >
-      <div className="flex ">
+    <main className={`p-24 ${inter.className}`}>
+      <div className="flex mb-1">
         <Button onClick={onAddNewCycle}>
-          <FontAwesomeIcon icon={faPlus} />
+          <FontAwesomeIcon icon={faPlus} /> Add cycle
         </Button>
-        <div className="flex max-w-4xl overflow-x-auto">
-          {cycles.map((cur, idx, src) => (
-            <div
-              key={idx}
-              className="min-w-[400px] border-[5px] border-orange-500"
-            >
-              <Cycle
-                title={`Cycle ${src.length - idx}`}
-                logDays={cur.logs}
-                addNewCycle={onAddNewDayLogByIdx(idx)}
-                changeRepetitionByIdx={onChangeReputationFromCycleByIdx(idx)}
-                changeWeightByIdx={onChangeWeightFromCycleByIdx(idx)}
-                onToggleExpand={onToggleExpandCycle(idx)}
-                expand={expandedCycleIndex === idx}
-              />
-            </div>
-          ))}
-        </div>
+      </div>
+      <div className="flex max-w-4xl overflow-x-auto">
+        {cycles.map((cur, idx, src) => (
+          <div
+            key={idx}
+            className={`${expandedCycleIndex === idx && "min-w-[400px]"}`}
+          >
+            <Cycle
+              title={`Cycle ${src.length - idx}`}
+              logDays={cur.logs}
+              addNewCycle={onAddNewDayLogByIdx(idx)}
+              changeRepetitionByIdx={onChangeReputationFromCycleByIdx(idx)}
+              changeWeightByIdx={onChangeWeightFromCycleByIdx(idx)}
+              onToggleExpand={onToggleExpandCycle(idx)}
+              expand={expandedCycleIndex === idx}
+            />
+          </div>
+        ))}
       </div>
     </main>
   );
