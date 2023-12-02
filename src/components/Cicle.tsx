@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { LogDayInputs } from "./LogDayInputs";
 import {
-  faAngleLeft,
   faAngleRight,
   faGear,
   faPlus,
@@ -13,26 +12,20 @@ export type LogDay = { weight: number; repetition: number };
 
 type CicleProps = {
   title: string;
+  logDays: LogDay[];
+  changeRepetitionByIdx: (dayIdx: number) => (newValue: number) => void;
+  changeWeightByIdx: (dayIdx: number) => (newValue: number) => void;
+  addNewCycle: () => void;
 };
 
-export const Cicle = ({ title }: CicleProps) => {
-  const [logDays, setLogDays] = useState<LogDay[]>([
-    { repetition: 0, weight: 0 },
-  ]);
+export const Cicle = ({
+  title,
+  changeRepetitionByIdx,
+  changeWeightByIdx,
+  addNewCycle,
+  logDays,
+}: CicleProps) => {
   const [expand, setExpand] = useState(false);
-
-  const onChangeRepetitionsByIdx = (idx: number) => (newValue: number) =>
-    setLogDays((prev) =>
-      prev.map((c, i) => (i === idx ? { ...c, repetition: newValue } : c))
-    );
-
-  const onChangeWeightByIdx = (idx: number) => (newValue: number) =>
-    setLogDays((prev) =>
-      prev.map((c, i) => (i === idx ? { ...c, weight: newValue } : c))
-    );
-
-  const onAddNewLogDay = () =>
-    setLogDays((prev) => [{ repetition: 0, weight: 0 }, ...prev]);
 
   return (
     <div className="flex gap-2 border border-black w-full">
@@ -41,7 +34,7 @@ export const Cicle = ({ title }: CicleProps) => {
           {title}
         </span>
         <div className="flex flex-col items-center gap-1 w-6">
-          <Button onClick={onAddNewLogDay}>
+          <Button onClick={addNewCycle}>
             <FontAwesomeIcon icon={faPlus} />
           </Button>
           <Button>
@@ -72,8 +65,8 @@ export const Cicle = ({ title }: CicleProps) => {
                 key={idx}
                 weight={cur.weight}
                 repetitions={cur.repetition}
-                onChangeRepetitions={onChangeRepetitionsByIdx(idx)}
-                onChangeWeight={onChangeWeightByIdx(idx)}
+                onChangeRepetitions={changeRepetitionByIdx(idx)}
+                onChangeWeight={changeWeightByIdx(idx)}
                 wrapperProps={{ style: { minWidth: "80px" } }}
                 title={`Day ${src.length - idx}`}
               />
