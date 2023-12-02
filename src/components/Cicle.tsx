@@ -16,6 +16,8 @@ type CicleProps = {
   changeRepetitionByIdx: (dayIdx: number) => (newValue: number) => void;
   changeWeightByIdx: (dayIdx: number) => (newValue: number) => void;
   addNewCycle: () => void;
+  onToggleExpand: () => void;
+  expand: boolean;
 };
 
 export const Cicle = ({
@@ -24,9 +26,9 @@ export const Cicle = ({
   changeWeightByIdx,
   addNewCycle,
   logDays,
+  onToggleExpand,
+  expand,
 }: CicleProps) => {
-  const [expand, setExpand] = useState(false);
-
   return (
     <div className="flex gap-2 border border-black w-full">
       <div className="flex flex-col items-center gap-2 font-bold p-4 bg-neutral-100  border-[5px] border-violet-500">
@@ -40,7 +42,7 @@ export const Cicle = ({
           <Button>
             <FontAwesomeIcon icon={faGear} />
           </Button>
-          <Button onClick={() => setExpand((prev) => !prev)}>
+          <Button onClick={onToggleExpand}>
             <FontAwesomeIcon
               icon={faAngleRight}
               className={`${

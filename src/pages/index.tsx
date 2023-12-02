@@ -17,6 +17,7 @@ export default function Home() {
   const [cycles, setCycles] = useState<CycleData[]>([
     { logs: [{ repetition: 0, weight: 0 }] },
   ]);
+  const [expandedCycleIndex, setExpandedCycleIndex] = useState(-1);
 
   const onAddNewCycle = () =>
     setCycles((prev) => [{ logs: [{ repetition: 0, weight: 0 }] }, ...prev]);
@@ -50,6 +51,17 @@ export default function Home() {
       );
     };
 
+  const onToggleExpandCycle = (cicleIdx: number) => () => {
+    if (expandedCycleIndex === -1) {
+      setExpandedCycleIndex(cicleIdx);
+    }
+    if (expandedCycleIndex === cicleIdx) {
+      setExpandedCycleIndex(-1);
+    } else {
+      setExpandedCycleIndex(cicleIdx);
+    }
+  };
+
   return (
     <main
       className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
@@ -70,6 +82,8 @@ export default function Home() {
                 addNewCycle={onAddNewDayLogByIdx(idx)}
                 changeRepetitionByIdx={onChangeReputationFromCycleByIdx(idx)}
                 changeWeightByIdx={onChangeWeightFromCycleByIdx(idx)}
+                onToggleExpand={onToggleExpandCycle(idx)}
+                expand={expandedCycleIndex === idx}
               />
             </div>
           ))}
