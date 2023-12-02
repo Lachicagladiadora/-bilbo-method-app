@@ -12,14 +12,16 @@ type CycleData = {
 };
 
 const NEW_DAY_LOG: LogDay = { repetition: 0, weight: 0 };
-const NEW_CYCLE:CycleData = { logs: [{ repetition: 0, weight: 0 }] }
+const NEW_CYCLE: CycleData = { logs: [{ repetition: 0, weight: 0 }] };
 
 export default function Home() {
   const [cycles, setCycles] = useState<CycleData[]>([NEW_CYCLE]);
   const [expandedCycleIndex, setExpandedCycleIndex] = useState(-1);
 
-  const onAddNewCycle = () =>
+  const onAddNewCycle = () => {
     setCycles((prev) => [{ logs: [{ repetition: 0, weight: 0 }] }, ...prev]);
+    setExpandedCycleIndex(0);
+  };
 
   const onAddNewDayLogByIdx = (cycleIdx: number) => () =>
     setCycles((prev) =>
@@ -51,8 +53,8 @@ export default function Home() {
     };
 
   const onToggleExpandCycle = (cycleIdx: number) => () => {
-    if (expandedCycleIndex <0) setExpandedCycleIndex(cycleIdx)
-    else setExpandedCycleIndex(expandedCycleIndex === cycleIdx?-1:cycleIdx)
+    if (expandedCycleIndex < 0) setExpandedCycleIndex(cycleIdx);
+    else setExpandedCycleIndex(expandedCycleIndex === cycleIdx ? -1 : cycleIdx);
   };
 
   return (
