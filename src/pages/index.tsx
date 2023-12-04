@@ -2,10 +2,13 @@ import { Inter } from "next/font/google";
 import { Button } from "@/components/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LogDay, Cycle } from "@/components/Cycle";
+import { json } from "stream/consumers";
 
 const inter = Inter({ subsets: ["latin"] });
+
+const CYCLES_KEY = "cycles";
 
 type CycleData = {
   logs: LogDay[];
@@ -18,17 +21,32 @@ export default function Home() {
   const [cycles, setCycles] = useState<CycleData[]>([NEW_CYCLE]);
   const [expandedCycleIndex, setExpandedCycleIndex] = useState(0);
 
+  useEffect(() => {
+    console.log(window);
+
+    const cycleStorage = window.localStorage.getItem(CYCLES_KEY);
+
+    const getItemLocalStorage = () => {
+      return cycleStorage ? JSON.parse(cycleStorage) : [NEW_CYCLE];
+    };
+
+    setCycles(getItemLocalStorage());
+  }, []);
+
   const onAddNewCycle = () => {
     setCycles((prev) => [{ logs: [{ repetition: 0, weight: 0 }] }, ...prev]);
     setExpandedCycleIndex(0);
+    localStorage.setItem(CYCLES_KEY, JSON.stringify(cycles));
   };
 
-  const onAddNewDayLogByIdx = (cycleIdx: number) => () =>
+  const onAddNewDayLogByIdx = (cycleIdx: number) => () => {
     setCycles((prev) =>
       prev.map((c, i) =>
         i === cycleIdx ? { logs: [NEW_DAY_LOG, ...c.logs] } : c
       )
     );
+    localStorage.setItem(CYCLES_KEY, JSON.stringify(cycles));
+  };
 
   const onChangeReputationFromCycleByIdx =
     (cycleIdx: number) => (dayIdx: number) => (newRepetition: number) => {
@@ -39,6 +57,7 @@ export default function Home() {
             : cur
         )
       );
+      localStorage.setItem(CYCLES_KEY, JSON.stringify(cycles));
     };
 
   const onChangeWeightFromCycleByIdx =
@@ -50,6 +69,7 @@ export default function Home() {
             : cur
         )
       );
+      localStorage.setItem(CYCLES_KEY, JSON.stringify(cycles));
     };
 
   const onToggleExpandCycle = (cycleIdx: number) => () => {
