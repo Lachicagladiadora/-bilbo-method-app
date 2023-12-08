@@ -50,7 +50,7 @@ export const Cycle = ({
       {expand && (
         <>
           <div className="flex flex-col gap-2 font-bold p-4 justify-center relative">
-            <div className="absolute top-0 left-0">
+            <div className="absolute top-2 left-0 flex gap-2">
               <Button onClick={addNewCycle}>
                 <FontAwesomeIcon icon={faPlus} />
               </Button>

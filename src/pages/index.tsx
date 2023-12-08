@@ -23,7 +23,6 @@ export default function Home() {
 
   useEffect(() => {
     console.log(window);
-
     const cycleStorage = window.localStorage.getItem(CYCLES_KEY);
 
     const getItemLocalStorage = () => {
@@ -34,42 +33,51 @@ export default function Home() {
   }, []);
 
   const onAddNewCycle = () => {
-    setCycles((prev) => [{ logs: [{ repetition: 0, weight: 0 }] }, ...prev]);
+    setCycles((prev) => {
+      const newCycles = [{ logs: [{ repetition: 0, weight: 0 }] }, ...prev];
+      localStorage.setItem(CYCLES_KEY, JSON.stringify(newCycles));
+      return newCycles;
+    });
     setExpandedCycleIndex(0);
-    localStorage.setItem(CYCLES_KEY, JSON.stringify(cycles));
   };
 
   const onAddNewDayLogByIdx = (cycleIdx: number) => () => {
-    setCycles((prev) =>
-      prev.map((c, i) =>
+    setCycles((prev) => {
+      const newCycleLogDay = prev.map((c, i) =>
         i === cycleIdx ? { logs: [NEW_DAY_LOG, ...c.logs] } : c
-      )
-    );
-    localStorage.setItem(CYCLES_KEY, JSON.stringify(cycles));
+      );
+      localStorage.setItem(CYCLES_KEY, JSON.stringify(newCycleLogDay));
+      return newCycleLogDay;
+    });
   };
 
-  const onChangeReputationFromCycleByIdx =
+  const onChangeRepetitionFromCycleByIdx =
     (cycleIdx: number) => (dayIdx: number) => (newRepetition: number) => {
-      setCycles((prev) =>
-        prev.map((cur, idx) =>
+      setCycles((prev) => {
+        const newCycleRepetitionById = prev.map((cur, idx) =>
           idx === cycleIdx
             ? { logs: changeRepetitionByIdx(dayIdx, cur.logs, newRepetition) }
             : cur
-        )
-      );
-      localStorage.setItem(CYCLES_KEY, JSON.stringify(cycles));
+        );
+        localStorage.setItem(
+          CYCLES_KEY,
+          JSON.stringify(newCycleRepetitionById)
+        );
+        return newCycleRepetitionById;
+      });
     };
 
   const onChangeWeightFromCycleByIdx =
     (cycleIdx: number) => (dayIdx: number) => (newWeight: number) => {
-      setCycles((prev) =>
-        prev.map((cur, idx) =>
+      setCycles((prev) => {
+        const newWeightCycleByIdx = prev.map((cur, idx) =>
           idx === cycleIdx
             ? { logs: changeWeightByIdx(dayIdx, cur.logs, newWeight) }
             : cur
-        )
-      );
-      localStorage.setItem(CYCLES_KEY, JSON.stringify(cycles));
+        );
+        localStorage.setItem(CYCLES_KEY, JSON.stringify(newWeightCycleByIdx));
+        return newWeightCycleByIdx;
+      });
     };
 
   const onToggleExpandCycle = (cycleIdx: number) => () => {
@@ -94,7 +102,7 @@ export default function Home() {
               title={`Cycle ${src.length - idx}`}
               logDays={cur.logs}
               addNewCycle={onAddNewDayLogByIdx(idx)}
-              changeRepetitionByIdx={onChangeReputationFromCycleByIdx(idx)}
+              changeRepetitionByIdx={onChangeRepetitionFromCycleByIdx(idx)}
               changeWeightByIdx={onChangeWeightFromCycleByIdx(idx)}
               onToggleExpand={onToggleExpandCycle(idx)}
               expand={expandedCycleIndex === idx}
